@@ -93,7 +93,7 @@
 <meta property="og:image" content="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210507130529.png">
 <meta property="og:image" content="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210507131708.png">
 <meta property="article:published_time" content="2021-05-08T12:46:34.000Z">
-<meta property="article:modified_time" content="2021-05-08T13:14:50.686Z">
+<meta property="article:modified_time" content="2021-05-08T16:26:01.372Z">
 <meta property="article:author" content="haobo&quot;s blog">
 <meta property="article:tag" content="学习">
 <meta property="article:tag" content="联邦学习">
@@ -372,7 +372,7 @@
 
       
         <blockquote>
-<p><font size=2>这篇论文证明最早的联邦平均算法其实是元学习的一种，而元学习可以作为个性化联邦学习的一种新方法</font></p>
+<p>这篇论文证明最早的联邦平均算法其实是元学习的一种，而元学习可以作为个性化联邦学习的一种新方法</p>
 </blockquote>
 <span id="more"></span>
 
@@ -410,8 +410,7 @@
 </li>
 </ul>
 <h4 id="FedAvg的收敛性实验"><a href="#FedAvg的收敛性实验" class="headerlink" title="FedAvg的收敛性实验"></a>FedAvg的收敛性实验</h4><p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210507125422.png" alt="image-20210507125415090"></p>
-<center>两种不同的数据集
-
+<center>两种不同的数据集</center>
 
 <p>表中的一些结论:</p>
 <ol>
@@ -437,12 +436,14 @@
 <li>Reptile(1)在微调过程中精度竟然会下降</li>
 </ul>
 <p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210507131708.png" alt="image-20210507131707982"></p>
-<p>观察表中数据，作者的意思大致是说：如果我们只看Initial Acc即初始化精度，根据最大似然原理我们会认为Reptile(10)是过拟合的，因为test与train的Acc差距过大，然而在Personalized Acc中结果显示Reptile(10)的精度比Reptile(1)的显著高很多，<strong>这就需要我们寻找一种能预测个性化模型泛化能力的方法</strong></p>
+<p>观察表中数据，作者的意思大致是说：如果我们只看Initial Acc即初始化精度，根据最大似然原理我们会认为Reptile(10)是过拟合的，因为test与train的Acc差距过大，然而在Personalized Acc中结果显示Reptile(10)的精度比Reptile(1)的显著高很多，<strong>这就需要我们寻找一种能预测个性化模型泛化能力的方法</strong>.</p>
 <h4 id="Discussion与Future-Work"><a href="#Discussion与Future-Work" class="headerlink" title="Discussion与Future Work"></a>Discussion与Future Work</h4><ul>
 <li>实验表明，用于训练模型的算法对模型的个性化能力有重要影响。</li>
 <li>此外，仅优化全局模型的准确性往往会对其个性化的能力产生负面影响，这进一步质疑联邦学习的常见目标的正确性。</li>
 <li>使用的方法需要考虑模型的初始性能，因为在实践中可能有许多客户端没有可用于个性化的数据</li>
 </ul>
+</br>
+
 <blockquote>
 <p>本文并没有提供代码，文章中提到，代码在使用TTF编写，写完之后会放出源码</p>
 <p>没有代码使得文章中很多地方都看的比较云里雾里，很多时候都不知道它是怎么实现的，用的什么方法</p>
