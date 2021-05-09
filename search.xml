@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>元学习与联邦学习</title>
+    <url>/2021/05/08/%E5%85%83%E5%AD%A6%E4%B9%A0%E4%B8%8E%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<blockquote>
+<p>这篇论文证明最早的联邦平均算法其实是元学习的一种，而元学习可以作为个性化联邦学习的一种新方法</p>
+</blockquote>
+<span id="more"></span>
+
+</br>
+
+<h3 id="元学习与联邦学习"><a href="#元学习与联邦学习" class="headerlink" title="元学习与联邦学习"></a><strong>元学习与联邦学习</strong></h3><h4 id="先说结论"><a href="#先说结论" class="headerlink" title="先说结论"></a>先说结论</h4><ul>
+<li>联邦平均算法可以解释为一种元学习算法</li>
+<li>微调可以产生更高精度的全局模型，同时更容易个性化，但是仅针对全局模型精度进行优化则会产生较弱的个性化结果</li>
+<li>仅使用数据中心节点优化方法训练的模型比使用联邦平均算法训练的模型更难个性化</li>
+</ul>
+<h4 id="实现个性化联邦学习要达到的一些目标"><a href="#实现个性化联邦学习要达到的一些目标" class="headerlink" title="实现个性化联邦学习要达到的一些目标"></a>实现个性化联邦学习要达到的一些目标</h4><ul>
+<li>改进的个性化模式要面向大多数客户</li>
+<li>可靠的初始化模型（一些客户的个性化数据有限，甚至没有）</li>
+<li>快速收敛，考虑到通信效率问题</li>
+</ul>
+<blockquote>
+<p>MAML一般只关注第一个目标，FL算法通常考虑的是后两个目标，这就体现了联邦学习中应用元学习的重要性</p>
+</blockquote>
+<h4 id="MAML、FL以及Reptile的联系"><a href="#MAML、FL以及Reptile的联系" class="headerlink" title="MAML、FL以及Reptile的联系"></a>MAML、FL以及Reptile的联系</h4><p>这是三种算法更新参数的过程：</p>
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210506212617.png" alt="image-20210506212610077"></p>
+<p>元学习的具体理论已在上次讨论中讲过。显然，元学习的内部更新对应于客户端更新，外部更新对应于server端更新，并且根据实验可得出经验性的结论（Reptile）的K步更新中，当K=1时会使模型难以个性化，增加K会显著提高个性化水平，直到增加到某个值时初始模型会变得不稳定</p>
+<blockquote>
+<p>论文中有详细（其实只用了几步）公式推导，推导过程不是很难，每步我都能看懂，但是连在一起我就不知道是什么意思了</p>
+</blockquote>
+<h4 id="个性化FedAvg"><a href="#个性化FedAvg" class="headerlink" title="个性化FedAvg"></a>个性化FedAvg</h4><p>算法步骤：</p>
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210507112300.png" alt="image-20210507112253036"></p>
+<ul>
+<li><p>使用FedAvg进行训练保证了模型能快速合理的收敛</p>
+</li>
+<li><p>文中提到使用SGD已经对模型进行了个性化优化（存疑，为什么？）</p>
+</li>
+<li><p>相对大的E可能使初始模型不稳定，客户端没有足够的数据训练</p>
+</li>
+<li><p>使用Reptile进行模型的个性化微调</p>
+</li>
+</ul>
+<h4 id="FedAvg的收敛性实验"><a href="#FedAvg的收敛性实验" class="headerlink" title="FedAvg的收敛性实验"></a>FedAvg的收敛性实验</h4><p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210507125422.png" alt="image-20210507125415090"></p>
+<center>两种不同的数据集</center>
+
+<p>表中的一些结论:</p>
+<ol>
+<li><p>个性化后的精度明显高于初始精度</p>
+</li>
+<li><p>此图支持了文中一个等式的观点</p>
+<ul>
+<li>局部梯度步长更多的联合平均法更加强调个性化精度（训练后的E=10精度明显高于E=2）</li>
+<li>步长的增加会以初始精度为代价（E=2的初始准确度方差更小）</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>有个小问题左图中的init与pers为什么不一样？</p>
+</blockquote>
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210507130204.png" alt="image-20210507130204304"></p>
+<p>这张表证明了本地更新次数E并不是越大越好</p>
+<h4 id="个性化表现"><a href="#个性化表现" class="headerlink" title="个性化表现"></a>个性化表现</h4><p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210507130529.png" alt="image-20210507130529038"></p>
+<p>表中结论：</p>
+<ul>
+<li>centralized trained models的精度一般都低于经过Reptile Finetuning的精度</li>
+<li>Reptile(10)表现很好</li>
+<li>Reptile(1)在微调过程中精度竟然会下降</li>
+</ul>
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210507131708.png" alt="image-20210507131707982"></p>
+<p>观察表中数据，作者的意思大致是说：如果我们只看Initial Acc即初始化精度，根据最大似然原理我们会认为Reptile(10)是过拟合的，因为test与train的Acc差距过大，然而在Personalized Acc中结果显示Reptile(10)的精度比Reptile(1)的显著高很多，<strong>这就需要我们寻找一种能预测个性化模型泛化能力的方法</strong>.</p>
+<h4 id="Discussion与Future-Work"><a href="#Discussion与Future-Work" class="headerlink" title="Discussion与Future Work"></a>Discussion与Future Work</h4><ul>
+<li>实验表明，用于训练模型的算法对模型的个性化能力有重要影响。</li>
+<li>此外，仅优化全局模型的准确性往往会对其个性化的能力产生负面影响，这进一步质疑联邦学习的常见目标的正确性。</li>
+<li>使用的方法需要考虑模型的初始性能，因为在实践中可能有许多客户端没有可用于个性化的数据</li>
+</ul>
+</br>
+
+<blockquote>
+<p>本文并没有提供代码，文章中提到，代码在使用TTF编写，写完之后会放出源码</p>
+<p>没有代码使得文章中很多地方都看的比较云里雾里，很多时候都不知道它是怎么实现的，用的什么方法</p>
+<p>原文地址：(<a href="https://arxiv.org/abs/1909.12488">https://arxiv.org/abs/1909.12488</a>)</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>学习</category>
+        <category>联邦学习</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>联邦学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Markdown语法</title>
+    <url>/2021/05/06/Markdown%E8%AF%AD%E6%B3%95/</url>
+    <content><![CDATA[</br>
+
+<blockquote>
+<p>这篇介绍用Typora写Markdown的基本语法（我的博客都是用Typora来写的😀）</p>
+</blockquote>
+<span id="more"></span>
+
+<blockquote>
+<p>本人写文档之类的一般都是用的Typora写Markdown格式，一是因为渲染出来的效果好，二是word排版太难了😥这里就简单介绍一下Markdown的基本语法。</p>
+<p>附typora的官方<a href="https://www.typora.io/">安装地址</a></p>
+</blockquote>
+</br>
+
+<h3 id="Markdown语法"><a href="#Markdown语法" class="headerlink" title="Markdown语法"></a>Markdown语法</h3><h4 id="1-标题"><a href="#1-标题" class="headerlink" title="1.标题"></a>1.标题</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">这里写源码，下面是渲染效果</span><br><span class="line"><span class="comment"># 一级标题</span></span><br><span class="line"><span class="comment">## 二级标题</span></span><br><span class="line"><span class="comment">### 三级标题</span></span><br><span class="line"><span class="comment">#### 四级标题</span></span><br><span class="line"><span class="comment">##### 五级标题</span></span><br><span class="line"><span class="comment">###### 六级标题</span></span><br><span class="line">或者使用Typora的快捷键(Ctrl+<span class="number">1</span>\<span class="number">2</span>\<span class="number">3</span>\……)</span><br></pre></td></tr></table></figure>
+
+<h1 id="一级标题"><a href="#一级标题" class="headerlink" title="一级标题"></a>一级标题</h1><h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><h3 id="三级标题"><a href="#三级标题" class="headerlink" title="三级标题"></a>三级标题</h3><h4 id="四级标题"><a href="#四级标题" class="headerlink" title="四级标题"></a>四级标题</h4><h5 id="五级标题"><a href="#五级标题" class="headerlink" title="五级标题"></a>五级标题</h5><h6 id="六级标题"><a href="#六级标题" class="headerlink" title="六级标题"></a>六级标题</h6><blockquote>
+<p>先打#再加上文字就会出现效果了(<strong>#与文字之间要有一个空格否则不会出现效果，当然也不是所有语法都要加上空格，这个可以自己试一下</strong>)</p>
+</blockquote>
+<p><strong>注：文中的都是英文符号，中文符号是不管用的</strong></p>
+<h4 id="2-字体"><a href="#2-字体" class="headerlink" title="2.字体"></a>2.字体</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">*斜体文字*</span><br><span class="line">**粗体文字**</span><br><span class="line">***粗斜体文字***</span><br><span class="line">~~删除线文字~~</span><br></pre></td></tr></table></figure>
+
+<p><em>斜体文字</em></p>
+<p><strong>粗体文字</strong></p>
+<p><em><strong>粗斜体文字</strong></em></p>
+<p><del>删除线文字</del></p>
+<h4 id="3-分割线、下划线"><a href="#3-分割线、下划线" class="headerlink" title="3.分割线、下划线"></a>3.分割线、下划线</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">---(分割线)</span><br><span class="line">&lt;u&gt;下划线文字&lt;/u&gt;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<hr>
+<p><u>下划线文字</u></p>
+<h4 id="4-脚注"><a href="#4-脚注" class="headerlink" title="4.脚注"></a>4.脚注</h4><blockquote>
+<p><font size=2>脚注是对文字的补充说明</font></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">要注明的文本[^序号]</span><br><span class="line">…………………………………………</span><br><span class="line">(隔了一段之后)</span><br><span class="line">…………………………………………</span><br><span class="line">[^序号]:对上文文本的解释</span><br></pre></td></tr></table></figure>
+
+<p>白雪歌诵武判官归京<a href="%E3%80%8A%E7%99%BD%E9%9B%AA%E6%AD%8C%E9%80%81%E6%AD%A6%E5%88%A4%E5%AE%98%E5%BD%92%E4%BA%AC%E3%80%8B%E6%98%AF%E5%94%90%E4%BB%A3%E8%AF%97%E4%BA%BA%E5%B2%91%E5%8F%82%E7%9A%84%E4%BD%9C%E5%93%81%E3%80%82%E6%AD%A4%E8%AF%97%E6%8F%8F%E5%86%99%E8%A5%BF%E5%9F%9F%E5%85%AB%E6%9C%88%E9%A3%9E%E9%9B%AA%E7%9A%84%E5%A3%AE%E4%B8%BD%E6%99%AF%E8%89%B2%E3%80%82">^1</a></p>
+<blockquote>
+<p>突然想起来就加上了，好像是初三背过的😂</p>
+</blockquote>
+<h4 id="5-链接引用"><a href="#5-链接引用" class="headerlink" title="5.链接引用"></a>5.链接引用</h4><figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">[链接名称](链接地址)</span><br><span class="line">	或者</span><br><span class="line">  &lt;链接地址&gt;</span><br></pre></td></tr></table></figure>
+
+<p><a href="change-every.github.io">皓博的博客</a></p>
+<p><a href="https://change-every.github.io/">https://change-every.github.io/</a></p>
+<p>没错，上面两个是一个网址😁</p>
+<h4 id="6-列表"><a href="#6-列表" class="headerlink" title="6.列表"></a>6.列表</h4><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">无序列表：</span><br><span class="line">    - 第一项</span><br><span class="line">    - 第二项</span><br><span class="line">    - 第三项</span><br><span class="line">有序列表：这个就比较简单了</span><br><span class="line">    <span class="number">1.</span> 第一项</span><br><span class="line">    <span class="number">2.</span> 第二项</span><br><span class="line">    <span class="number">3.</span> 第三项</span><br><span class="line">列表嵌套：只需在子列表选项前加四个空格</span><br><span class="line"><span class="number">1.</span> 第一项</span><br><span class="line">    - 第<span class="number">1.1</span>项</span><br><span class="line">    - 第<span class="number">2.2</span>项</span><br><span class="line"><span class="number">2.</span> 第二项</span><br><span class="line">    - 第<span class="number">2.1</span>项</span><br><span class="line">    - 第<span class="number">2.2</span>项</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><font size=2>这个标点符号后面要加空格的</font></p>
+</blockquote>
+<p>无序列表</p>
+<ul>
+<li><p>第一项</p>
+</li>
+<li><p>第二项</p>
+</li>
+</ul>
+<p>有序列表</p>
+<ol>
+<li>第一项</li>
+<li>第二项</li>
+</ol>
+<p>嵌套列表</p>
+<ol>
+<li>第一项<ul>
+<li>第1.1项</li>
+<li>第1.2项</li>
+</ul>
+</li>
+<li>第二项<ul>
+<li>第2.1项</li>
+<li>第2.2项</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><font size=2>嵌套列表建议先把外面的序号打完再去添加里面嵌套的序号，要不排版会有点难受</font></p>
+</blockquote>
+<h4 id="7-区块"><a href="#7-区块" class="headerlink" title="7.区块"></a>7.区块</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">&gt; 这里就是区块里的文字</span><br><span class="line">&gt;&gt; 区块也可以嵌套</span><br><span class="line">&gt;&gt;&gt; 下面两个都是嵌套的</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这里就是区块的文字</p>
+<blockquote>
+<p>这里就是嵌套</p>
+<blockquote>
+<p>我再嵌套一个</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h4 id="8-代码块"><a href="#8-代码块" class="headerlink" title="8.代码块"></a>8.代码块</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">​```指定的语言</span><br><span class="line">例：</span><br><span class="line">    ```python</span><br><span class="line">例：</span><br><span class="line">    ```java</span><br></pre></td></tr></table></figure>
+
+<p>渲染效果：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">```</span><br><span class="line"></span><br><span class="line"><span class="comment">#### 9.图片</span></span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">![图片名字](图片地址)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>其实把[]和()打出来之后typora就会自动显示文件夹让你选择了，图片地址一般不用手打</p>
+<p>还有另一种方法：右键选择插入图片🤣</p>
+<p>这里就不演示了</p>
+</blockquote>
+<h4 id="10-文字版式"><a href="#10-文字版式" class="headerlink" title="10.文字版式"></a>10.文字版式</h4><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&lt;center&gt;使文字居中&lt;/center&gt;</span><br><span class="line">&lt;font face=&quot;设置字体&quot; size=大小 color=颜色&gt;文字&lt;/font&gt;</span><br></pre></td></tr></table></figure>
+
+<center>使文字居中</center>
+
+<p><font face="楷体" size=3 color=blue>文字</font></p>
+<blockquote>
+<p>其实Markdown本身并不支持改变文字版式等，上文使用的HTML的代码，但是不用加代码块直接打就好</p>
+</blockquote>
+<h4 id="11-源码"><a href="#11-源码" class="headerlink" title="11.源码"></a>11.源码</h4><p>由于typora是实时渲染，就是你写好了使文字居中的代码，按下enter键，效果就会立刻显示出来，所以是实时渲染，但是其他的编辑器是不支持这种的，一般你看到的只是你写的代码，看不到效果。所以在typora中想看自己的源代码的话就要用快捷键Ctrl+/。</p>
+<h4 id="12-最后"><a href="#12-最后" class="headerlink" title="12.最后"></a>12.最后</h4><p>本文写的都是基本的Markdown语法，基本满足日常的写作需要，其实更高阶的语法本人还没接触到😅，等到用的多了，会再写一篇博客讲高阶技巧</p>
+<blockquote>
+<p>版权意识：<a href="https://www.runoob.com/markdown/md-tutorial.html">参考链接</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>学习</category>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>Markdown语法</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>套马杆[青花瓷、双截棍改编]</title>
+    <url>/2021/05/04/%E5%A5%97%E9%A9%AC%E6%9D%86-%E9%9D%92%E8%8A%B1%E7%93%B7/</url>
+    <content><![CDATA[<blockquote>
+<p><font size=2>德云社张鹤伦年轻时改编的串烧歌曲，用套马杆的调唱丝毫不觉得别扭，有意思🤣</font></p>
+</blockquote>
+<span id="more"></span></br>
+
+<center>岩烧店的烟味弥漫 隔壁是武术馆
+
+<center>店里面的妈妈桑 茶道有三段
+<center>教拳脚武术的老板 练铁砂掌耍杨家枪 <!-- more -->
+
+
+<center>硬底子功夫最擅长 还会金钟罩铁布衫
+
+<center>他们儿子我习惯 从小就耳濡目染
+
+<center>什么刀枪跟棍棒 我都耍的有模有样
+
+<center>什么兵器最喜欢 双截棍柔中带刚
+
+<center>想要去河南嵩山 学少林跟武当</center>
+
+<center>天青色等烟雨 而我在等你
+
+<center>炊烟袅袅升起 隔江千万里
+
+<center>在瓶底书汉隶仿前朝的飘逸</center>
+<center>就当我为遇见你伏笔
+
+<center>快使用双截棍 哼哼哈嘿
+
+<center>习武之人切记仁者无敌
+
+<center>是谁在练太极风生水起
+
+   <center>为人耿直不屈一身正气</center>
+
+<br/>
+
+<p><br/><font size=2><a href="https://v.qq.com/x/page/h0805fv6o7h.html">参考网站</a></font></p>
+]]></content>
+      <categories>
+        <category>趣</category>
+        <category>德云社</category>
+      </categories>
+      <tags>
+        <tag>德云社</tag>
+        <tag>张鹤伦</tag>
+        <tag>趣</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>时运赋</title>
+    <url>/2021/05/03/%E6%97%B6%E8%BF%90%E8%B5%8B/</url>
+    <content><![CDATA[<blockquote>
+<p><font size=2>时运赋又名《寒窑赋》、《命运赋》，为北宋吕蒙正的经典之作。</font></p>
+<p><font size=2>本人是从B站上看到郭德纲视频中曾朗诵此段话，且朗朗上口故摘抄至此</font></p>
+</blockquote>
+<span id="more"></span></br>
+
+<center>人啊，不容易
+<center>时也，命也，运也
+<center>天有不测风云，人有旦夕祸福
+
+
+<center>蜈蚣百足，行不及蛇
+
+<center>灵鸡有翼，飞不及鸭
+
+<center>马有千里之程，无人不能自往
+
+<center>人有凌云之志，非运不能腾达
+
+<center>文章盖世，孔子困于陈蔡；武略超群，太公垂钓渭水
+
+<center>盗跖年幼，不是善良之辈；颜回命短，实非凶恶之徒
+
+<center>尧、舜至圣，反生不肖之子；瞽叟顽呆，却生大圣之儿
+
+<center>张良原是布衣，萧何称谓县吏
+
+<center>晏子身无五尺，封为齐国首相；孔明卧居草庐，做了蜀汉军师
+
+<center>韩信手无缚鸡之力，封为汉朝大将；冯唐有安邦之志，到老半官无封
+
+<center>楚王虽雄，难免乌江自刎；汉王虽弱，却有万里江山
+
+<center>满腹经纶，白发不第
+
+<center>才疏学浅，少年登科
+
+<center>有先贫而后富，有先富而后贫
+
+<center>蛟龙未遇，潜身于鱼虾之间；君子失时，拱手于小人之下
+
+<center>天不得时，日月无光；地不得时，草木不长
+
+<center>水不得时，风浪不止；人不得时，利运不通
+<center>盖人生在世
+<center>富贵不能淫，贫贱不能移，此乃天理循环，终而复始者也
+
+</br>
+
+</br>
+
+<p><font size=1.8><a href="https://zhuanlan.zhihu.com/p/128596984">参考网站</a></font></p>
+]]></content>
+      <categories>
+        <category>趣</category>
+        <category>德云社</category>
+      </categories>
+      <tags>
+        <tag>德云社</tag>
+        <tag>趣</tag>
+        <tag>郭德纲</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>秦岭野生动物园一游</title>
+    <url>/2021/04/28/%E7%A7%A6%E5%B2%AD%E9%87%8E%E7%94%9F%E5%8A%A8%E7%89%A9%E5%9B%AD%E4%B8%80%E6%B8%B8/</url>
+    <content><![CDATA[<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210505143710.jpg"></p>
+<center>慵懒的小熊猫
+<span id="more"></span>
+
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210505143729.jpg"></p>
+<center>夕阳照到身上显得格外好看
+
+<center>听说你排全球最可爱物种第二十二?😜
+
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210505143741.jpg"></p>
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152442.jpg"></p>
+<center>站起的瞬间刚好被我拍到了😁(现在看咋还有点呆萌呢)
+
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152503.jpg"></p>
+<center>黑豹
+
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152518.jpg"></p>
+<center>专注干饭20年
+
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152535.jpg"></p>
+<center>吃饱了溜溜弯
+
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152553.jpg"></p>
+<center>乍一看我还以为是雕像🤣
+
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152630.jpg"></p>
+<center>换个姿势继续睡
+
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152654.jpg"></p>
+<center>孟加拉白虎--好看
+
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152713.jpg"></p>
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152731.jpg"></p>
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152746.jpg"></p>
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152809.jpg"></p>
+<center>羚牛-----羊的一种😂
+
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152825.jpg"></p>
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152841.jpg"></p>
+<center>天鹅湖
+> <font size=2>4月末怕五一人太多，考完试就找个时间去了</font>
+>
+> <font size=2>人很少，但没逛完，听说有个投食猛兽的很好玩</font>
+>
+> <font size=2>那天去的晚了，好多都还没来得及仔细看，下次有时间再去吧！</font>
+
+</br>
+
+<hr>
+</br>
+
+<blockquote>
+<p><font size=2>5月5日更，看来还是提前去的好，放假西安人太多了，以后玩这种旅游景点就得调周末去</font></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>趣</category>
+        <category>西安游</category>
+      </categories>
+      <tags>
+        <tag>趣</tag>
+        <tag>西安游</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>小娟儿(改编)</title>
+    <url>/2021/05/04/%E5%B0%8F%E5%A8%9F%E5%84%BF/</url>
+    <content><![CDATA[<blockquote>
+<p><font size=2>好像是张鹤伦写的歌儿，好听ing</font></p>
+</blockquote>
+<span id="more"></span></br>
+
+<center>欸呀我的天儿啊
+
+<center>破鞋露脚尖儿啊 <!-- more -->
+
+<center>老师让我交学费 我说等两天儿啊
+
+<center>没钱我光脚丫儿啊
+
+<center>外面飘雪花儿啊
+
+<center>邻家小妹儿瞧见了是眼泪含眼圈儿啊
+
+<center>她是我的心肝儿啊
+
+<center>取名叫小娟儿啊
+
+<center>闭月羞花沉鱼落雁比我胖两圈儿啊
+
+<center>如今她有了钱儿啊
+
+<center>给人当小三儿啊
+
+<center>德云社里说相声的捧哏叫于谦儿啊
+
+</br>
+
+</br>
+
+<p><font size=1.8><a href="https://www.bilibili.com/video/av43536507/">参考网站</a></p>
+]]></content>
+      <categories>
+        <category>趣</category>
+        <category>德云社</category>
+      </categories>
+      <tags>
+        <tag>德云社</tag>
+        <tag>趣</tag>
+      </tags>
+  </entry>
+</search>
