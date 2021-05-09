@@ -1,99 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>元学习与联邦学习</title>
-    <url>/2021/05/08/%E5%85%83%E5%AD%A6%E4%B9%A0%E4%B8%8E%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<blockquote>
-<p>这篇论文证明最早的联邦平均算法其实是元学习的一种，而元学习可以作为个性化联邦学习的一种新方法</p>
-</blockquote>
-<span id="more"></span>
-
-</br>
-
-<h3 id="元学习与联邦学习"><a href="#元学习与联邦学习" class="headerlink" title="元学习与联邦学习"></a><strong>元学习与联邦学习</strong></h3><h4 id="先说结论"><a href="#先说结论" class="headerlink" title="先说结论"></a>先说结论</h4><ul>
-<li>联邦平均算法可以解释为一种元学习算法</li>
-<li>微调可以产生更高精度的全局模型，同时更容易个性化，但是仅针对全局模型精度进行优化则会产生较弱的个性化结果</li>
-<li>仅使用数据中心节点优化方法训练的模型比使用联邦平均算法训练的模型更难个性化</li>
-</ul>
-<h4 id="实现个性化联邦学习要达到的一些目标"><a href="#实现个性化联邦学习要达到的一些目标" class="headerlink" title="实现个性化联邦学习要达到的一些目标"></a>实现个性化联邦学习要达到的一些目标</h4><ul>
-<li>改进的个性化模式要面向大多数客户</li>
-<li>可靠的初始化模型（一些客户的个性化数据有限，甚至没有）</li>
-<li>快速收敛，考虑到通信效率问题</li>
-</ul>
-<blockquote>
-<p>MAML一般只关注第一个目标，FL算法通常考虑的是后两个目标，这就体现了联邦学习中应用元学习的重要性</p>
-</blockquote>
-<h4 id="MAML、FL以及Reptile的联系"><a href="#MAML、FL以及Reptile的联系" class="headerlink" title="MAML、FL以及Reptile的联系"></a>MAML、FL以及Reptile的联系</h4><p>这是三种算法更新参数的过程：</p>
-<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210506212617.png" alt="image-20210506212610077"></p>
-<p>元学习的具体理论已在上次讨论中讲过。显然，元学习的内部更新对应于客户端更新，外部更新对应于server端更新，并且根据实验可得出经验性的结论（Reptile）的K步更新中，当K=1时会使模型难以个性化，增加K会显著提高个性化水平，直到增加到某个值时初始模型会变得不稳定</p>
-<blockquote>
-<p>论文中有详细（其实只用了几步）公式推导，推导过程不是很难，每步我都能看懂，但是连在一起我就不知道是什么意思了</p>
-</blockquote>
-<h4 id="个性化FedAvg"><a href="#个性化FedAvg" class="headerlink" title="个性化FedAvg"></a>个性化FedAvg</h4><p>算法步骤：</p>
-<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210507112300.png" alt="image-20210507112253036"></p>
-<ul>
-<li><p>使用FedAvg进行训练保证了模型能快速合理的收敛</p>
-</li>
-<li><p>文中提到使用SGD已经对模型进行了个性化优化（存疑，为什么？）</p>
-</li>
-<li><p>相对大的E可能使初始模型不稳定，客户端没有足够的数据训练</p>
-</li>
-<li><p>使用Reptile进行模型的个性化微调</p>
-</li>
-</ul>
-<h4 id="FedAvg的收敛性实验"><a href="#FedAvg的收敛性实验" class="headerlink" title="FedAvg的收敛性实验"></a>FedAvg的收敛性实验</h4><p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210507125422.png" alt="image-20210507125415090"></p>
-<center>两种不同的数据集</center>
-
-<p>表中的一些结论:</p>
-<ol>
-<li><p>个性化后的精度明显高于初始精度</p>
-</li>
-<li><p>此图支持了文中一个等式的观点</p>
-<ul>
-<li>局部梯度步长更多的联合平均法更加强调个性化精度（训练后的E=10精度明显高于E=2）</li>
-<li>步长的增加会以初始精度为代价（E=2的初始准确度方差更小）</li>
-</ul>
-</li>
-</ol>
-<blockquote>
-<p>有个小问题左图中的init与pers为什么不一样？</p>
-</blockquote>
-<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210507130204.png" alt="image-20210507130204304"></p>
-<p>这张表证明了本地更新次数E并不是越大越好</p>
-<h4 id="个性化表现"><a href="#个性化表现" class="headerlink" title="个性化表现"></a>个性化表现</h4><p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210507130529.png" alt="image-20210507130529038"></p>
-<p>表中结论：</p>
-<ul>
-<li>centralized trained models的精度一般都低于经过Reptile Finetuning的精度</li>
-<li>Reptile(10)表现很好</li>
-<li>Reptile(1)在微调过程中精度竟然会下降</li>
-</ul>
-<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210507131708.png" alt="image-20210507131707982"></p>
-<p>观察表中数据，作者的意思大致是说：如果我们只看Initial Acc即初始化精度，根据最大似然原理我们会认为Reptile(10)是过拟合的，因为test与train的Acc差距过大，然而在Personalized Acc中结果显示Reptile(10)的精度比Reptile(1)的显著高很多，<strong>这就需要我们寻找一种能预测个性化模型泛化能力的方法</strong>.</p>
-<h4 id="Discussion与Future-Work"><a href="#Discussion与Future-Work" class="headerlink" title="Discussion与Future Work"></a>Discussion与Future Work</h4><ul>
-<li>实验表明，用于训练模型的算法对模型的个性化能力有重要影响。</li>
-<li>此外，仅优化全局模型的准确性往往会对其个性化的能力产生负面影响，这进一步质疑联邦学习的常见目标的正确性。</li>
-<li>使用的方法需要考虑模型的初始性能，因为在实践中可能有许多客户端没有可用于个性化的数据</li>
-</ul>
-</br>
-
-<blockquote>
-<p>本文并没有提供代码，文章中提到，代码在使用TTF编写，写完之后会放出源码</p>
-<p>没有代码使得文章中很多地方都看的比较云里雾里，很多时候都不知道它是怎么实现的，用的什么方法</p>
-<p>原文地址：(<a href="https://arxiv.org/abs/1909.12488">https://arxiv.org/abs/1909.12488</a>)</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>学习</category>
-        <category>联邦学习</category>
-      </categories>
-      <tags>
-        <tag>学习</tag>
-        <tag>联邦学习</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Markdown语法</title>
-    <url>/2021/05/06/Markdown%E8%AF%AD%E6%B3%95/</url>
+    <url>/%E5%AD%A6%E4%B9%A0/%E5%B7%A5%E5%85%B7/Markdown%E8%AF%AD%E6%B3%95/</url>
     <content><![CDATA[</br>
 
 <blockquote>
@@ -216,8 +125,99 @@
       </tags>
   </entry>
   <entry>
+    <title>元学习与联邦学习</title>
+    <url>/%E5%AD%A6%E4%B9%A0/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/%E5%85%83%E5%AD%A6%E4%B9%A0%E4%B8%8E%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<blockquote>
+<p>这篇论文证明最早的联邦平均算法其实是元学习的一种，而元学习可以作为个性化联邦学习的一种新方法</p>
+</blockquote>
+<span id="more"></span>
+
+</br>
+
+<h3 id="元学习与联邦学习"><a href="#元学习与联邦学习" class="headerlink" title="元学习与联邦学习"></a><strong>元学习与联邦学习</strong></h3><h4 id="先说结论"><a href="#先说结论" class="headerlink" title="先说结论"></a>先说结论</h4><ul>
+<li>联邦平均算法可以解释为一种元学习算法</li>
+<li>微调可以产生更高精度的全局模型，同时更容易个性化，但是仅针对全局模型精度进行优化则会产生较弱的个性化结果</li>
+<li>仅使用数据中心节点优化方法训练的模型比使用联邦平均算法训练的模型更难个性化</li>
+</ul>
+<h4 id="实现个性化联邦学习要达到的一些目标"><a href="#实现个性化联邦学习要达到的一些目标" class="headerlink" title="实现个性化联邦学习要达到的一些目标"></a>实现个性化联邦学习要达到的一些目标</h4><ul>
+<li>改进的个性化模式要面向大多数客户</li>
+<li>可靠的初始化模型（一些客户的个性化数据有限，甚至没有）</li>
+<li>快速收敛，考虑到通信效率问题</li>
+</ul>
+<blockquote>
+<p>MAML一般只关注第一个目标，FL算法通常考虑的是后两个目标，这就体现了联邦学习中应用元学习的重要性</p>
+</blockquote>
+<h4 id="MAML、FL以及Reptile的联系"><a href="#MAML、FL以及Reptile的联系" class="headerlink" title="MAML、FL以及Reptile的联系"></a>MAML、FL以及Reptile的联系</h4><p>这是三种算法更新参数的过程：</p>
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210506212617.png" alt="image-20210506212610077"></p>
+<p>元学习的具体理论已在上次讨论中讲过。显然，元学习的内部更新对应于客户端更新，外部更新对应于server端更新，并且根据实验可得出经验性的结论（Reptile）的K步更新中，当K=1时会使模型难以个性化，增加K会显著提高个性化水平，直到增加到某个值时初始模型会变得不稳定</p>
+<blockquote>
+<p>论文中有详细（其实只用了几步）公式推导，推导过程不是很难，每步我都能看懂，但是连在一起我就不知道是什么意思了</p>
+</blockquote>
+<h4 id="个性化FedAvg"><a href="#个性化FedAvg" class="headerlink" title="个性化FedAvg"></a>个性化FedAvg</h4><p>算法步骤：</p>
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210507112300.png" alt="image-20210507112253036"></p>
+<ul>
+<li><p>使用FedAvg进行训练保证了模型能快速合理的收敛</p>
+</li>
+<li><p>文中提到使用SGD已经对模型进行了个性化优化（存疑，为什么？）</p>
+</li>
+<li><p>相对大的E可能使初始模型不稳定，客户端没有足够的数据训练</p>
+</li>
+<li><p>使用Reptile进行模型的个性化微调</p>
+</li>
+</ul>
+<h4 id="FedAvg的收敛性实验"><a href="#FedAvg的收敛性实验" class="headerlink" title="FedAvg的收敛性实验"></a>FedAvg的收敛性实验</h4><p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210507125422.png" alt="image-20210507125415090"></p>
+<center>两种不同的数据集</center>
+
+<p>表中的一些结论:</p>
+<ol>
+<li><p>个性化后的精度明显高于初始精度</p>
+</li>
+<li><p>此图支持了文中一个等式的观点</p>
+<ul>
+<li>局部梯度步长更多的联合平均法更加强调个性化精度（训练后的E=10精度明显高于E=2）</li>
+<li>步长的增加会以初始精度为代价（E=2的初始准确度方差更小）</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>有个小问题左图中的init与pers为什么不一样？</p>
+</blockquote>
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210507130204.png" alt="image-20210507130204304"></p>
+<p>这张表证明了本地更新次数E并不是越大越好</p>
+<h4 id="个性化表现"><a href="#个性化表现" class="headerlink" title="个性化表现"></a>个性化表现</h4><p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210507130529.png" alt="image-20210507130529038"></p>
+<p>表中结论：</p>
+<ul>
+<li>centralized trained models的精度一般都低于经过Reptile Finetuning的精度</li>
+<li>Reptile(10)表现很好</li>
+<li>Reptile(1)在微调过程中精度竟然会下降</li>
+</ul>
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210507131708.png" alt="image-20210507131707982"></p>
+<p>观察表中数据，作者的意思大致是说：如果我们只看Initial Acc即初始化精度，根据最大似然原理我们会认为Reptile(10)是过拟合的，因为test与train的Acc差距过大，然而在Personalized Acc中结果显示Reptile(10)的精度比Reptile(1)的显著高很多，<strong>这就需要我们寻找一种能预测个性化模型泛化能力的方法</strong>.</p>
+<h4 id="Discussion与Future-Work"><a href="#Discussion与Future-Work" class="headerlink" title="Discussion与Future Work"></a>Discussion与Future Work</h4><ul>
+<li>实验表明，用于训练模型的算法对模型的个性化能力有重要影响。</li>
+<li>此外，仅优化全局模型的准确性往往会对其个性化的能力产生负面影响，这进一步质疑联邦学习的常见目标的正确性。</li>
+<li>使用的方法需要考虑模型的初始性能，因为在实践中可能有许多客户端没有可用于个性化的数据</li>
+</ul>
+</br>
+
+<blockquote>
+<p>本文并没有提供代码，文章中提到，代码在使用TTF编写，写完之后会放出源码</p>
+<p>没有代码使得文章中很多地方都看的比较云里雾里，很多时候都不知道它是怎么实现的，用的什么方法</p>
+<p>原文地址：(<a href="https://arxiv.org/abs/1909.12488">https://arxiv.org/abs/1909.12488</a>)</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>学习</category>
+        <category>联邦学习</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>联邦学习</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>套马杆[青花瓷、双截棍改编]</title>
-    <url>/2021/05/04/%E5%A5%97%E9%A9%AC%E6%9D%86-%E9%9D%92%E8%8A%B1%E7%93%B7/</url>
+    <url>/%E8%B6%A3/%E5%BE%B7%E4%BA%91%E7%A4%BE/%E5%A5%97%E9%A9%AC%E6%9D%86-%E9%9D%92%E8%8A%B1%E7%93%B7/</url>
     <content><![CDATA[<blockquote>
 <p><font size=2>德云社张鹤伦年轻时改编的串烧歌曲，用套马杆的调唱丝毫不觉得别扭，有意思🤣</font></p>
 </blockquote>
@@ -269,8 +269,55 @@
       </tags>
   </entry>
   <entry>
+    <title>小娟儿(改编)</title>
+    <url>/%E8%B6%A3/%E5%BE%B7%E4%BA%91%E7%A4%BE/%E5%B0%8F%E5%A8%9F%E5%84%BF/</url>
+    <content><![CDATA[<blockquote>
+<p><font size=2>好像是张鹤伦写的歌儿，好听ing</font></p>
+</blockquote>
+<span id="more"></span></br>
+
+<center>欸呀我的天儿啊
+
+<center>破鞋露脚尖儿啊 <!-- more -->
+
+<center>老师让我交学费 我说等两天儿啊
+
+<center>没钱我光脚丫儿啊
+
+<center>外面飘雪花儿啊
+
+<center>邻家小妹儿瞧见了是眼泪含眼圈儿啊
+
+<center>她是我的心肝儿啊
+
+<center>取名叫小娟儿啊
+
+<center>闭月羞花沉鱼落雁比我胖两圈儿啊
+
+<center>如今她有了钱儿啊
+
+<center>给人当小三儿啊
+
+<center>德云社里说相声的捧哏叫于谦儿啊
+
+</br>
+
+</br>
+
+<p><font size=1.8><a href="https://www.bilibili.com/video/av43536507/">参考网站</a></p>
+]]></content>
+      <categories>
+        <category>趣</category>
+        <category>德云社</category>
+      </categories>
+      <tags>
+        <tag>德云社</tag>
+        <tag>趣</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>时运赋</title>
-    <url>/2021/05/03/%E6%97%B6%E8%BF%90%E8%B5%8B/</url>
+    <url>/%E8%B6%A3/%E5%BE%B7%E4%BA%91%E7%A4%BE/%E6%97%B6%E8%BF%90%E8%B5%8B/</url>
     <content><![CDATA[<blockquote>
 <p><font size=2>时运赋又名《寒窑赋》、《命运赋》，为北宋吕蒙正的经典之作。</font></p>
 <p><font size=2>本人是从B站上看到郭德纲视频中曾朗诵此段话，且朗朗上口故摘抄至此</font></p>
@@ -336,7 +383,7 @@
   </entry>
   <entry>
     <title>秦岭野生动物园一游</title>
-    <url>/2021/04/28/%E7%A7%A6%E5%B2%AD%E9%87%8E%E7%94%9F%E5%8A%A8%E7%89%A9%E5%9B%AD%E4%B8%80%E6%B8%B8/</url>
+    <url>/%E8%B6%A3/%E8%A5%BF%E5%AE%89%E6%B8%B8/%E7%A7%A6%E5%B2%AD%E9%87%8E%E7%94%9F%E5%8A%A8%E7%89%A9%E5%9B%AD%E4%B8%80%E6%B8%B8/</url>
     <content><![CDATA[<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210505143710.jpg"></p>
 <center>慵懒的小熊猫
 <span id="more"></span>
@@ -399,53 +446,6 @@
       <tags>
         <tag>趣</tag>
         <tag>西安游</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>小娟儿(改编)</title>
-    <url>/2021/05/04/%E5%B0%8F%E5%A8%9F%E5%84%BF/</url>
-    <content><![CDATA[<blockquote>
-<p><font size=2>好像是张鹤伦写的歌儿，好听ing</font></p>
-</blockquote>
-<span id="more"></span></br>
-
-<center>欸呀我的天儿啊
-
-<center>破鞋露脚尖儿啊 <!-- more -->
-
-<center>老师让我交学费 我说等两天儿啊
-
-<center>没钱我光脚丫儿啊
-
-<center>外面飘雪花儿啊
-
-<center>邻家小妹儿瞧见了是眼泪含眼圈儿啊
-
-<center>她是我的心肝儿啊
-
-<center>取名叫小娟儿啊
-
-<center>闭月羞花沉鱼落雁比我胖两圈儿啊
-
-<center>如今她有了钱儿啊
-
-<center>给人当小三儿啊
-
-<center>德云社里说相声的捧哏叫于谦儿啊
-
-</br>
-
-</br>
-
-<p><font size=1.8><a href="https://www.bilibili.com/video/av43536507/">参考网站</a></p>
-]]></content>
-      <categories>
-        <category>趣</category>
-        <category>德云社</category>
-      </categories>
-      <tags>
-        <tag>德云社</tag>
-        <tag>趣</tag>
       </tags>
   </entry>
 </search>
