@@ -192,7 +192,7 @@
 <li>Reptile(1)在微调过程中精度竟然会下降</li>
 </ul>
 <p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210507131708.png" alt="image-20210507131707982"></p>
-<p>观察表中数据，作者的意思大致是说：如果我们只看Initial Acc即初始化精度，根据最大似然原理我们会认为Reptile(10)是过拟合的，因为test与train的Acc差距过大，然而在Personalized Acc中结果显示Reptile(10)的精度比Reptile(1)的显著高很多，<strong>这就需要我们寻找一种能预测个性化模型泛化能力的方法</strong>.</p>
+<p>观察表中数据，作者的意思大致是说：如果我们只看Initial Acc即初始化精度，根据最大似然原理我们会认为Reptile(10)是过拟合的，因为test与train的Acc差距过大，然而在Personalized Acc中结果显示Reptile(10)的精度比Reptile(1)的显著高很多，<strong>这就需要我们寻找一种能预测个性化模型泛化能力的方法</strong>.（这就存在一个问题，什么才是模型的个性化，模型个性化后对哪些数据表现得更好）</p>
 <h4 id="Discussion与Future-Work"><a href="#Discussion与Future-Work" class="headerlink" title="Discussion与Future Work"></a>Discussion与Future Work</h4><ul>
 <li>实验表明，用于训练模型的算法对模型的个性化能力有重要影响。</li>
 <li>此外，仅优化全局模型的准确性往往会对其个性化的能力产生负面影响，这进一步质疑联邦学习的常见目标的正确性。</li>
@@ -213,6 +213,31 @@
       <tags>
         <tag>学习</tag>
         <tag>联邦学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>凸优化Word</title>
+    <url>/%E5%AD%A6%E4%B9%A0/%E5%87%B8%E4%BC%98%E5%8C%96/%E5%87%B8%E4%BC%98%E5%8C%96Word/</url>
+    <content><![CDATA[<p>学习凸优化时的一些英文生词记录下来<!-- lesss --></p>
+<p>outline……大纲；概要</p>
+<p>affine……仿射集</p>
+<p>line segment……线段</p>
+<p>hyperplane……超平面</p>
+<p>normal vector……法向向量</p>
+<p>polyhedra……多面体</p>
+<p>intersection……交集</p>
+<p>Euclidean Ball……欧几里得球</p>
+<p>ellipsoid……椭圆</p>
+<p>symmetric positive definite……对称正定</p>
+<p>square and nonsingular……一致且非奇异</p>
+]]></content>
+      <categories>
+        <category>学习</category>
+        <category>凸优化</category>
+      </categories>
+      <tags>
+        <tag>学习</tag>
+        <tag>凸优化</tag>
       </tags>
   </entry>
   <entry>
@@ -382,6 +407,73 @@
       </tags>
   </entry>
   <entry>
+    <title>秦岭野生动物园一游</title>
+    <url>/%E8%B6%A3/%E8%A5%BF%E5%AE%89%E6%B8%B8/%E7%A7%A6%E5%B2%AD%E9%87%8E%E7%94%9F%E5%8A%A8%E7%89%A9%E5%9B%AD%E4%B8%80%E6%B8%B8/</url>
+    <content><![CDATA[<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210505143710.jpg"></p>
+<center>慵懒的小熊猫
+<span id="more"></span>
+
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210505143729.jpg"></p>
+<center>夕阳照到身上显得格外好看
+
+<center>听说你排全球最可爱物种第二十二?😜
+
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210505143741.jpg"></p>
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152442.jpg"></p>
+<center>站起的瞬间刚好被我拍到了😁(现在看咋还有点呆萌呢)
+
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152503.jpg"></p>
+<center>黑豹
+
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152518.jpg"></p>
+<center>专注干饭20年
+
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152535.jpg"></p>
+<center>吃饱了溜溜弯
+
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152553.jpg"></p>
+<center>乍一看我还以为是雕像🤣
+
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152630.jpg"></p>
+<center>换个姿势继续睡
+
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152654.jpg"></p>
+<center>孟加拉白虎--好看
+
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152713.jpg"></p>
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152731.jpg"></p>
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152746.jpg"></p>
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152809.jpg"></p>
+<center>羚牛-----羊的一种😂
+
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152825.jpg"></p>
+<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152841.jpg"></p>
+<center>天鹅湖
+> <font size=2>4月末怕五一人太多，考完试就找个时间去了</font>
+>
+> <font size=2>人很少，但没逛完，听说有个投食猛兽的很好玩</font>
+>
+> <font size=2>那天去的晚了，好多都还没来得及仔细看，下次有时间再去吧！</font>
+
+</br>
+
+<hr>
+</br>
+
+<blockquote>
+<p><font size=2>5月5日更，看来还是提前去的好，放假西安人太多了，以后玩这种旅游景点就得调周末去</font></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>趣</category>
+        <category>西安游</category>
+      </categories>
+      <tags>
+        <tag>趣</tag>
+        <tag>西安游</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>英语六级</title>
     <url>/%E5%AD%A6%E4%B9%A0/%E8%8B%B1%E8%AF%AD%E5%85%AD%E7%BA%A7/</url>
     <content><![CDATA[</p>
@@ -477,80 +569,49 @@
 <p>acidity 酸味</p>
 <p>Alternatively 或者</p>
 <p>summarize 总结</p>
-<p>peppery 辣的；脾气不好的</p>]]></content>
+<p>peppery 辣的；脾气不好的</p>
+<hr>
+<p>2021-5-11</p>
+<p>努力冲刺30天，定叫日月换新颜，加油ヾ(◍°∇°◍)ﾉﾞ</p>
+<p>lamb 羊羔</p>
+<p>eternal 永恒的；不朽的</p>
+<p>disputed 有争议的</p>
+<p>abundant 丰富的</p>
+<p>ideal 理想的</p>
+<p>issue 发行；发布；造成……结果；问题</p>
+<p>bystander 旁观者</p>
+<p>campaign 活动</p>
+<p>repute 名誉</p>
+<p>suppose 假定的</p>
+<p>obsess 痴迷</p>
+<p>proclamation 公告；宣布</p>
+<p>rectify 改正；纠正</p>
+<p>versatile 多才多艺的；万能的</p>
+<p>suppose 认为</p>
+<p>notoriously 众所周知地</p>
+<p>quantify 量化</p>
+<p>hover 盘旋；徘徊</p>
+<p>massive 庞大的</p>
+<p>surveillance 监视</p>
+<p>constraint 约束；强制</p>
+<p>consistent 一致的</p>
+<p>across the road 全面地</p>
+<p>adjust 调整</p>
+<p>format 版本；格式</p>
+<p>invariant 不变的</p>
+<p>far from 完全不</p>
+<p>sensible 理智的</p>
+<p>debt 债务</p>
+<p>loan 贷款</p>
+<p>faculty 全体教员</p>
+<p>utility 公共设施；实用的</p>
+<p>maintenance 维修；维护</p>]]></content>
       <categories>
         <category>学习</category>
       </categories>
       <tags>
         <tag>学习</tag>
         <tag>英语</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>秦岭野生动物园一游</title>
-    <url>/%E8%B6%A3/%E8%A5%BF%E5%AE%89%E6%B8%B8/%E7%A7%A6%E5%B2%AD%E9%87%8E%E7%94%9F%E5%8A%A8%E7%89%A9%E5%9B%AD%E4%B8%80%E6%B8%B8/</url>
-    <content><![CDATA[<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210505143710.jpg"></p>
-<center>慵懒的小熊猫
-<span id="more"></span>
-
-<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210505143729.jpg"></p>
-<center>夕阳照到身上显得格外好看
-
-<center>听说你排全球最可爱物种第二十二?😜
-
-<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210505143741.jpg"></p>
-<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152442.jpg"></p>
-<center>站起的瞬间刚好被我拍到了😁(现在看咋还有点呆萌呢)
-
-<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152503.jpg"></p>
-<center>黑豹
-
-<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152518.jpg"></p>
-<center>专注干饭20年
-
-<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152535.jpg"></p>
-<center>吃饱了溜溜弯
-
-<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152553.jpg"></p>
-<center>乍一看我还以为是雕像🤣
-
-<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152630.jpg"></p>
-<center>换个姿势继续睡
-
-<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152654.jpg"></p>
-<center>孟加拉白虎--好看
-
-<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152713.jpg"></p>
-<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152731.jpg"></p>
-<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152746.jpg"></p>
-<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152809.jpg"></p>
-<center>羚牛-----羊的一种😂
-
-<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152825.jpg"></p>
-<p><img src="https://zhb-1305808268.cos.ap-nanjing.myqcloud.com/20210504152841.jpg"></p>
-<center>天鹅湖
-> <font size=2>4月末怕五一人太多，考完试就找个时间去了</font>
->
-> <font size=2>人很少，但没逛完，听说有个投食猛兽的很好玩</font>
->
-> <font size=2>那天去的晚了，好多都还没来得及仔细看，下次有时间再去吧！</font>
-
-</br>
-
-<hr>
-</br>
-
-<blockquote>
-<p><font size=2>5月5日更，看来还是提前去的好，放假西安人太多了，以后玩这种旅游景点就得调周末去</font></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>趣</category>
-        <category>西安游</category>
-      </categories>
-      <tags>
-        <tag>趣</tag>
-        <tag>西安游</tag>
       </tags>
   </entry>
 </search>
